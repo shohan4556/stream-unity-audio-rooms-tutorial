@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/AudioRoomsTutorial.unity
+    guid: c3511419f638a794ebcfbb6e37f216f8
   m_configObjects: {}
