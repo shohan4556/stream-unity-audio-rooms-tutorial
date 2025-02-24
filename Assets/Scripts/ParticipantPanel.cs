@@ -2,21 +2,16 @@ using System;
 using StreamVideo.Core.StatefulModels;
 using StreamVideo.Core.StatefulModels.Tracks;
 using UnityEngine;
-using UnityEngine.Android;
 
 public class ParticipantPanel : MonoBehaviour
 {
-    private void Awake()
-    {
-        // Request microphone permissions
-        Permission.RequestUserPermission(Permission.Microphone);
+    
+    // This AudioSource will play the audio received from the participant
+    private AudioSource _audioOutputAudioSource;
 
-        // Check if user granted microphone permission
-        if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
-        {
-            // Notify user that microphone permission was not granted and the microphone capturing will not work.
-        }
-    }
+    // Keep reference so we can unsubscribe from events in OnDestroy
+    private IStreamVideoCallParticipant _participant;
+    
 
     public void Init(IStreamVideoCallParticipant participant)
     {
@@ -57,9 +52,4 @@ public class ParticipantPanel : MonoBehaviour
         _participant.TrackAdded -= OnTrackAdded;
     }
 
-    // This AudioSource will play the audio received from the participant
-    private AudioSource _audioOutputAudioSource;
-
-    // Keep reference so we can unsubscribe from events in OnDestroy
-    private IStreamVideoCallParticipant _participant;
 }

@@ -37,6 +37,8 @@ public class UIManager : MonoBehaviour
     {
         var streamClient = _audioRoomsManager.StreamClient;
         _audioDeviceManager = streamClient.AudioDeviceManager;
+        
+        // add listeners to when participant joins or leaves the call
         _audioRoomsManager.ParticipantJoined += OnParticipantJoined;
         _audioRoomsManager.ParticipantLeft += OnParticipantLeft;
         
@@ -109,15 +111,7 @@ public class UIManager : MonoBehaviour
         _audioDeviceManager.SelectDevice(selectedMicrophone, enable: true);
     }
     
-    // private void OnParticipantJoined(IStreamVideoCallParticipant participant)
-    // {
-    //     ParticipantJoined?.Invoke(participant);
-    // }
     
-    // private void OnParticipantLeft(string sessionId, string userid)
-    // {
-    //     ParticipantLeft?.Invoke(sessionId);
-    // }
     
     private void OnParticipantJoined(IStreamVideoCallParticipant participant)
     {

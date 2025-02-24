@@ -5,6 +5,7 @@ using StreamVideo.Core;
 using StreamVideo.Core.StatefulModels;
 using StreamVideo.Libs.Auth;
 using UnityEngine;
+using UnityEngine.Android;
 
 public class AudioRoomsManager : MonoBehaviour
 {
@@ -25,6 +26,15 @@ public class AudioRoomsManager : MonoBehaviour
     
     protected async void Awake()
     {
+        // Request microphone permissions
+        Permission.RequestUserPermission(Permission.Microphone);
+
+        // Check if user granted microphone permission
+        if (!Permission.HasUserAuthorizedPermission(Permission.Microphone))
+        {
+            // todo Notify user that microphone permission was not granted and the microphone capturing will not work.
+        }
+        
         // Create Client instance
         StreamClient = StreamVideoClient.CreateDefaultClient();
         
@@ -45,7 +55,7 @@ public class AudioRoomsManager : MonoBehaviour
     
     public async Task JoinCallAsync(string callId)
     {
-        _activeCall = await StreamClient.JoinCallAsync(StreamCallType.Default, callId, create: true, ring: false, notify: false);
+        _activeCall = await StreamClient.JoinCallAsync(StreamCallType.Default, callId, create: true, ring: false, notify: true);
 
         // Handle already present participants
         foreach (var participant in _activeCall.Participants)
@@ -71,6 +81,16 @@ public class AudioRoomsManager : MonoBehaviour
         _activeCall.ParticipantLeft -= OnParticipantLeft;
     
         await _activeCall.LeaveAsync();
+    }
+    
+    private void OnParticipantJoined(IStreamVideoCallParticipant participant)
+    {
+        ParticipantJoined?.Invoke(participant);
+    }
+    
+    private void OnParticipantLeft(string sessionId, string userid)
+    {
+        ParticipantLeft?.Invoke(sessionId);
     }
 
    
